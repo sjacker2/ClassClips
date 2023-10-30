@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -40,6 +42,16 @@ public class WelcomeActivity extends AppCompatActivity {
                 return true;
             }
             return true;
+        });
+
+        ImageButton plusButton = findViewById(R.id.plusButton);
+        plusButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show the InputNameFragment as a dialog
+                InputNameFragment dialogFragment = new InputNameFragment();
+                dialogFragment.show(getSupportFragmentManager(), "InputNameDialog");
+            }
         });
 
 
