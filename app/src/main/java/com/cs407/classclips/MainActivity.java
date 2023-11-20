@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     //go to welcome activity
     public void onClickLogin(View view){
         EditText username = (EditText) findViewById(R.id.username);
-        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.lab5_milestone", MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.classclips", MODE_PRIVATE);
         sharedPreferences.edit().putString("username", username.getText().toString()).apply();
         goToActivity(username.getText().toString());
     }

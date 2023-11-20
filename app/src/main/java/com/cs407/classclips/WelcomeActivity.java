@@ -2,6 +2,7 @@ package com.cs407.classclips;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class WelcomeActivity extends AppCompatActivity {
 
@@ -27,35 +29,30 @@ public class WelcomeActivity extends AppCompatActivity {
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
+            Fragment selectedFragment = null;
             if(itemId == R.id.nav_back){
-                //navigate to previous screen
+                // navigate to previous screen
                 finish();
                 return true;
-            }else if(itemId == R.id.nav_home){ //navigate to welcome activity
-                Intent intent2 = new Intent(this, WelcomeActivity.class);
-                startActivity(intent2);
-                return true;
+            }else if(itemId == R.id.nav_home){
+                // navigate to welcome activity
+                selectedFragment = new ClassesPageFragment();
             }else if(itemId == R.id.nav_help){
-                //go to help screen
-                Intent intent2 = new Intent(this, help_activity.class);
-                startActivity(intent2);
-                return true;
+                // go to help screen
+                selectedFragment = new HelpFragment();
             }
+
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragmentContainerView, selectedFragment).commit();
+            }
+
             return true;
         });
 
-        ImageButton plusButton = findViewById(R.id.plusButton);
-        plusButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Show the InputNameFragment as a dialog
-                InputNameFragment dialogFragment = new InputNameFragment();
-                dialogFragment.show(getSupportFragmentManager(), "InputNameDialog");
-            }
-        });
-
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainerView, new ClassesPageFragment()).commit();
 
     }
-
 
 }

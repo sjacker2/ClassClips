@@ -3,6 +3,7 @@ package com.cs407.classclips;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
 
 //this is the fragment that brings up the add a class popup
 public class InputNameFragment extends DialogFragment {
     private EditText editTextName;
     private Button buttonSave;
     private Button buttonCancel;
+
+    SharedPreferences sharedPreferences;
+    DBHelper dbHelper;
 
     @NonNull
     @Override
@@ -31,18 +36,22 @@ public class InputNameFragment extends DialogFragment {
         buttonSave = view.findViewById(R.id.buttonSave);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
+        sharedPreferences = getActivity().getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
+        Context context = getActivity().getApplicationContext();
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("classes", Context.MODE_PRIVATE, null);
+        dbHelper = new DBHelper(sqLiteDatabase, getActivity().getApplicationContext());
+
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = editTextName.getText().toString().trim();
-                if (!name.isEmpty()) {
-                    // Save the name
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_data", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString("user_name", name);
-                    editor.apply();
+                String className = editTextName.getText().toString().trim();
+                if (!className.isEmpty()) {
+                    // Save the class name
+                    String username = sharedPreferences.getString("username", "");
+                    dbHelper.saveClass(username, className);
 
                     Toast.makeText(getActivity(), "Name saved!", Toast.LENGTH_SHORT).show();
+
                     dismiss(); // Close the dialog
                 } else {
                     Toast.makeText(getActivity(), "Please enter a class name", Toast.LENGTH_SHORT).show();

@@ -13,13 +13,7 @@
         android:theme="@style/Theme.ClassClips"
         tools:targetApi="31">
         <activity
-            android:name=".help_activity"
-            android:exported="false" />
-        <activity
             android:name=".WelcomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".WelcomeClass"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
