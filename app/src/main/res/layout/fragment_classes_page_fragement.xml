@@ -37,28 +37,11 @@
                     android:src="@drawable/baseline_add_box_24" />
             </LinearLayout>
 
-            <TableLayout
-                android:id="@+id/classesTableLayout"
+            <ListView
+                android:id="@+id/classesListView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </TableLayout>
-
+            </ListView>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

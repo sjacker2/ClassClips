@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -109,8 +110,25 @@ public class ClassesPageFragment extends Fragment {
 
         classes = dbHelper.readClasses(user);
 
+        for (Class classItem : classes) {
+            displayClasses.add(String.format("Class: %s", classItem.getTitle()));
+        }
+
+        ListView listView = view.findViewById(R.id.classesListView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, displayClasses);
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Handle click event, open new Fragment/Activity for the selected class
+                String selectedClass = classes.get(position).getTitle();
+                openLecturePage(selectedClass);
+            }
+        });
+
         // create strings for display and add to the tablelayout view
-        for (Class note : classes) {
+        /* for (Class note : classes) {
             displayClasses.add(String.format("Class: %s\n", note.getTitle()));
         }
 
@@ -122,7 +140,12 @@ public class ClassesPageFragment extends Fragment {
             for (int i = 0; i < count; i++) {
                 tableLayout.addView(adapter.getView(i, null, tableLayout));
             }
-        }
+        } */
+    }
+
+    private void openLecturePage(String className) {
+        // Code to open new Fragment/Activity here
+        // Pass className as an argument or extra to the new Fragment/Activity
     }
 
 }

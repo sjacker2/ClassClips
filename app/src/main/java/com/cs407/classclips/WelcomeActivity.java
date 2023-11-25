@@ -26,6 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
+        //for navigation bar w/ home, back, help
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -50,6 +51,8 @@ public class WelcomeActivity extends AppCompatActivity {
             return true;
         });
 
+        //right now only shows up when refresh page, may need to
+        //put this in method that is called when 'save' button is clicked
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainerView, new ClassesPageFragment()).commit();
 
