@@ -1,9 +1,11 @@
 package com.cs407.classclips;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -110,6 +111,7 @@ public class ClassesPageFragment extends Fragment {
 
         classes = dbHelper.readClasses(user);
 
+        //strings to display
         for (Class classItem : classes) {
             displayClasses.add(String.format("Class: %s", classItem.getTitle()));
         }
@@ -122,30 +124,17 @@ public class ClassesPageFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // Handle click event, open new Fragment/Activity for the selected class
-                String selectedClass = classes.get(position).getTitle();
+                int selectedClass = classes.get(position).getId();
                 openLecturePage(selectedClass);
             }
         });
-
-        // create strings for display and add to the tablelayout view
-        /* for (Class note : classes) {
-            displayClasses.add(String.format("Class: %s\n", note.getTitle()));
-        }
-
-        ArrayAdapter adapter = new ArrayAdapter(context, android.R.layout.simple_list_item_1, displayClasses);
-        TableLayout tableLayout = view.findViewById(R.id.classesTableLayout);
-
-        if (adapter != null) {
-            int count = adapter.getCount();
-            for (int i = 0; i < count; i++) {
-                tableLayout.addView(adapter.getView(i, null, tableLayout));
-            }
-        } */
     }
 
-    private void openLecturePage(String className) {
-        // Code to open new Fragment/Activity here
-        // Pass className as an argument or extra to the new Fragment/Activity
+    //when click on a class goes to that class page
+    private void openLecturePage(int classId) {
+        Intent intent = new Intent(getActivity().getApplicationContext(), lecturePage.class);
+        intent.putExtra("CLASS_ID", classId);
+        startActivity(intent);
     }
 
 }
