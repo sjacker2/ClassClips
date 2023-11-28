@@ -26,7 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        //for navigation bar w/ home, back, help
+        //for navigation bar with home, back, help
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemId = item.getItemId();
@@ -39,7 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 // navigate to welcome activity
                 selectedFragment = new ClassesPageFragment();
             }else if(itemId == R.id.nav_help){
-                // go to help screen
+                // navigate to help screen
                 selectedFragment = new HelpFragment();
             }
 
