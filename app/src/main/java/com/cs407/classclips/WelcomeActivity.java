@@ -51,8 +51,6 @@ public class WelcomeActivity extends AppCompatActivity {
             return true;
         });
 
-        //right now only shows up when refresh page, may need to
-        //put this in method that is called when 'save' button is clicked
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainerView, new ClassesPageFragment()).commit();
 

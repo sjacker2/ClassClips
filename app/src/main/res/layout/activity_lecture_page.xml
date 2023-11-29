@@ -21,7 +21,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="62dp"
             android:orientation="horizontal">
 
             <android.widget.SearchView
@@ -40,15 +40,22 @@
                 android:layout_width="107dp"
                 android:layout_height="wrap_content"
                 android:text="Add New Lecture" />
+
         </LinearLayout>
 
         <ListView
             android:id="@+id/lecturesListView"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="10dp"
+            android:layout_weight="1"/>
 
-        </ListView>
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation1"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_navigation_menu" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

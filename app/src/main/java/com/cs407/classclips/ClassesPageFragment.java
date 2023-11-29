@@ -87,8 +87,8 @@ public class ClassesPageFragment extends Fragment {
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Show the InputNameFragment as a dialog
-                InputNameFragment dialogFragment = new InputNameFragment();
+                // Instantiate the InputNameFragment with type for adding a class
+                InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_CLASS, -1); // -1 as classId since it's irrelevant here
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "InputNameDialog");
             }
         });
@@ -97,6 +97,13 @@ public class ClassesPageFragment extends Fragment {
         initClasses(view);
 
     }
+    //fixes classes not showing bug hopefully
+    @Override
+    public void onResume() {
+        super.onResume();
+        initClasses(getView());
+    }
+
 
     public void initClasses(View view) {
         // get data from database

@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-//this is the fragment that brings up the add a class popup
+//this is the fragment that brings up the add a class or lecture popup
 public class InputNameFragment extends DialogFragment {
     private EditText editTextName;
     private Button buttonSave;
@@ -23,6 +23,30 @@ public class InputNameFragment extends DialogFragment {
 
     SharedPreferences sharedPreferences;
     DBHelper dbHelper;
+
+    public static final int TYPE_CLASS = 0;
+    public static final int TYPE_LECTURE = 1;
+
+    private int type; // This determines if the fragment is used for a class or a lecture
+    private int classId; // Needed if this is for adding a lecture
+
+    public static InputNameFragment newInstance(int type, int classId) {
+        InputNameFragment fragment = new InputNameFragment();
+        Bundle args = new Bundle();
+        args.putInt("type", type);
+        args.putInt("classId", classId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            type = getArguments().getInt("type");
+            classId = getArguments().getInt("classId");
+        }
+    }
 
     @NonNull
     @Override
@@ -44,20 +68,26 @@ public class InputNameFragment extends DialogFragment {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String className = editTextName.getText().toString().trim();
-                if (!className.isEmpty()) {
-                    // Save the class name
-                    String username = sharedPreferences.getString("username", "");
-                    dbHelper.saveClass(username, className);
-
-                    Toast.makeText(getActivity(), "Name saved!", Toast.LENGTH_SHORT).show();
+                String name = editTextName.getText().toString().trim();
+                if (!name.isEmpty()) {
+                    if (type == TYPE_CLASS) {
+                        // Save the class name
+                        String username = sharedPreferences.getString("username", "");
+                        dbHelper.saveClass(username, name);
+                        Toast.makeText(getActivity(), "Class saved!", Toast.LENGTH_SHORT).show();
+                    } else if (type == TYPE_LECTURE) {
+                        // Save the lecture name
+                        dbHelper.addLecture(classId, name);
+                        Toast.makeText(getActivity(), "Lecture saved!", Toast.LENGTH_SHORT).show();
+                    }
 
                     dismiss(); // Close the dialog
                 } else {
-                    Toast.makeText(getActivity(), "Please enter a class name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please enter a name", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
