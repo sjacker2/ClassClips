@@ -92,11 +92,12 @@ public class DBHelper {
                 new String[] {content, title, username});
     }
 
-    public void deleteClass(String username, String title, int classId) {
-        createTable();
+    public void deleteClass(int classId) {
+        // First delete all lectures associated with the class
         deleteLecturesForClass(classId);
-        sqLiteDatabase.execSQL("DELETE FROM classes WHERE username = ? AND title=?",
-                new String[] {username, title});
+
+        // Now delete the class itself
+        sqLiteDatabase.execSQL("DELETE FROM classes WHERE id = ?", new String[]{String.valueOf(classId)});
     }
 
     public void deleteLecturesForClass(int classId) {

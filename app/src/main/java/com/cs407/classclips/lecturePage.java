@@ -3,7 +3,10 @@ package com.cs407.classclips;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -133,10 +136,29 @@ public class lecturePage extends AppCompatActivity {
         loadLectures();
     }
 
+    //checks to make sure user wants to delete class
     private void deleteClass(int classId) {
-        // Delete class
-        //go to welcome screen
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Class")
+                .setMessage("Are you sure you want to delete this class and all its lectures?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        performClassDeletion(classId);
+                    }})
+                .setNegativeButton("Cancel", null).show();
     }
+
+    //deletes the class and all of the lectures inside
+    private void performClassDeletion(int classId) {
+        dbHelper.deleteClass(classId);
+
+        // Navigate to the Welcome Screen or Main Screen
+        Intent intent = new Intent(this, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Close the current activity
+    }
+
 
     private void deleteLecture(int lectureId){
         //put this in lecture details activity
