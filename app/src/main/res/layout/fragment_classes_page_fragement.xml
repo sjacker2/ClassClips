@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClassesPageFragment">
+    tools:context=".ClassesPageFragment"
+    android:background="#ca1c1c">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -24,7 +25,9 @@
                     android:id="@+id/searchView"
                     android:layout_width="350dp"
                     android:layout_height="40dp"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:queryHint="Search"
+                    android:outlineAmbientShadowColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/plusButton"
@@ -34,13 +37,18 @@
                     android:background="?android:attr/selectableItemBackground"
                     android:scaleX="1.5"
                     android:scaleY="1.5"
-                    android:src="@drawable/baseline_add_box_24" />
+                    android:src="@android:drawable/ic_menu_add" />
             </LinearLayout>
 
             <ListView
                 android:id="@+id/classesListView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:textColor="@color/white"
+                android:divider="@color/white"
+                android:dividerHeight="1dp"
+                android:listSelector="#800020"
+                android:background="#ca1c1c">
             </ListView>
         </LinearLayout>
 
