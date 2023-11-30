@@ -101,11 +101,7 @@ public class lecturePage extends AppCompatActivity {
         loadLectures();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadLectures(); // Reload lectures to refresh the list
-    }
+
 
     private void loadLectures() {
         // Fetch lectures for the given class from the database
@@ -121,6 +117,18 @@ public class lecturePage extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadLectures(); // Reload lectures to refresh the list
+    }
+
+    private void addNewLecture(int classId) {
+        // Instantiate the InputNameFragment for adding a lecture
+        InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_LECTURE, classId);
+        dialogFragment.show(getSupportFragmentManager(), "AddLectureDialog");
+        loadLectures();
+    }
 
     private void openLectureDetail(Lecture lecture) {
         // Navigate to Lecture Detail Activity
@@ -130,12 +138,6 @@ public class lecturePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void addNewLecture(int classId) {
-        // Instantiate the InputNameFragment for adding a lecture
-        InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_LECTURE, classId);
-        dialogFragment.show(getSupportFragmentManager(), "AddLectureDialog");
-        loadLectures();
-    }
 
     //checks to make sure user wants to delete class
     private void deleteClass(int classId) {

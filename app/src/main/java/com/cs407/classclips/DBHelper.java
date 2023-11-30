@@ -51,6 +51,13 @@ public class DBHelper {
         return classList;
     }
 
+    public void saveClass(String username, String title) {
+        createTable();
+
+        sqLiteDatabase.execSQL("INSERT INTO classes (username, title) VALUES (?, ?)",
+                new String[]{username, title});
+    }
+
     public ArrayList<Lecture> getLecturesForClass(int classId) {
         createLectureTable();
         Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM lectures WHERE classId = ?",
@@ -68,13 +75,6 @@ public class DBHelper {
         }
         c.close();
         return lecturesList;
-    }
-
-    public void saveClass(String username, String title) {
-        createTable();
-
-        sqLiteDatabase.execSQL("INSERT INTO classes (username, title) VALUES (?, ?)",
-                new String[]{username, title});
     }
 
     public void addLecture(int classId, String title) {

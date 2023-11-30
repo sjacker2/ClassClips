@@ -65,6 +65,13 @@ public class InputNameFragment extends DialogFragment {
         SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("classes", Context.MODE_PRIVATE, null);
         dbHelper = new DBHelper(sqLiteDatabase, getActivity().getApplicationContext());
 
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss(); // Close the dialog without saving
+            }
+        });
+
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,14 +92,6 @@ public class InputNameFragment extends DialogFragment {
                 } else {
                     Toast.makeText(getActivity(), "Please enter a name", Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss(); // Close the dialog without saving
             }
         });
 
