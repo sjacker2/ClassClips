@@ -1,14 +1,17 @@
 package com.cs407.classclips;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.InputType;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -28,7 +32,7 @@ import java.util.ArrayList;
  * Use the {@link ClassesPageFragment#newInstance} factory method to
  * create an instance of this fragment
  */
-public class ClassesPageFragment extends Fragment {
+public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassAdapterListener  {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,10 +45,12 @@ public class ClassesPageFragment extends Fragment {
 
     private ArrayList<String> displayClasses;
     static ArrayList<Class> classes;
+    private ClassAdapter adapter; // Changed from ArrayAdapter<String> to ClassAdapter
 
     public ClassesPageFragment() {
         // Required empty public constructor
     }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -104,6 +110,10 @@ public class ClassesPageFragment extends Fragment {
         initClasses(getView());
     }
 
+    @Override
+    public void onRenameClicked(Class classToRename, int position) {
+        showRenameDialog(classToRename, position);
+    }
 
     public void initClasses(View view) {
         // get data from database
@@ -124,17 +134,45 @@ public class ClassesPageFragment extends Fragment {
         }
 
         ListView listView = view.findViewById(R.id.classesListView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, displayClasses);
-        listView.setAdapter(adapter);
+        this.adapter = new ClassAdapter(getActivity(), classes, this);
+        listView.setAdapter(this.adapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Handle click event, open new Fragment/Activity for the selected class
-                int selectedClass = classes.get(position).getId();
-                openLecturePage(selectedClass);
-            }
+        listView.setOnItemClickListener((parent, view1, position, id) -> {
+            int selectedClassId = classes.get(position).getId();
+            openLecturePage(selectedClassId);
         });
+
+        listView.setOnItemLongClickListener((parent, view12, position, id) -> {
+            showRenameDialog(classes.get(position), position);
+            return true;
+        });
+    }
+
+    private void showRenameDialog(Class classToRename, int position) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle("Rename Class");
+
+        final EditText input = new EditText(getActivity());
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setText(classToRename.getTitle());
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", (dialog, which) -> {
+            String newClassName = input.getText().toString();
+            updateClassName(classToRename, newClassName, position);
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
+    }
+
+    private void updateClassName(Class classToRename, String newClassName, int position) {
+        DBHelper dbHelper = new DBHelper(getActivity().getApplicationContext().openOrCreateDatabase("classes", Context.MODE_PRIVATE, null), getActivity().getApplicationContext());
+        dbHelper.updateClassName(classToRename.getId(), newClassName);
+
+        // Update the class in the ArrayList and refresh the ListView
+        classToRename.setTitle(newClassName);
+        displayClasses.set(position, String.format("Class: %s", newClassName));
+        this.adapter.notifyDataSetChanged();
     }
 
     //when click on a class goes to that class page

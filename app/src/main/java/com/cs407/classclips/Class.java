@@ -10,6 +10,7 @@ public class Class {
         this.username = username;
         this.title = title;
     }
+
     public int getId(){
         return id;
     }
@@ -17,11 +18,16 @@ public class Class {
     public void setId(int id){
         this.id = id;
     }
+
     public String getUsername() {
         return username;
     }
+
     public String getTitle() {
         return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 }

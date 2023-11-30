@@ -7,9 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 
 public class DBHelper {
-    static SQLiteDatabase sqLiteDatabase;
     static Context context;
-
+    static SQLiteDatabase sqLiteDatabase;
 
     public DBHelper(SQLiteDatabase sqLiteDatabase, Context context) {
         this.sqLiteDatabase = sqLiteDatabase;
@@ -25,6 +24,7 @@ public class DBHelper {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS lectures " +
                 "(id INTEGER PRIMARY KEY, classId INTEGER, title TEXT, FOREIGN KEY(classId) REFERENCES classes(id))");
     }
+
 
 
     public ArrayList<Class> readClasses(String username) {
@@ -129,5 +129,11 @@ public class DBHelper {
     public void deleteLecture(int lectureId) {
         createLectureTable();
         sqLiteDatabase.execSQL("DELETE FROM lectures WHERE id = ?", new String[]{String.valueOf(lectureId)});
+    }
+
+    public void updateClassName(int classId, String newTitle) {
+        createTable();
+        sqLiteDatabase.execSQL("UPDATE classes SET title = ? WHERE id = ?",
+                new String[]{newTitle, String.valueOf(classId)});
     }
 }
