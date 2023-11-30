@@ -106,6 +106,26 @@ public class DBHelper {
                 new String[]{String.valueOf(classId)});
     }
 
+    public Lecture getLectureById(int lectureId) {
+        createLectureTable();
+        Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM lectures WHERE id = ?", new String[]{String.valueOf(lectureId)});
+
+        Lecture lecture = null;
+        if (c.moveToFirst()) {
+            int idIndex = c.getColumnIndex("id");
+            int titleIndex = c.getColumnIndex("title");
+
+            int id = c.getInt(idIndex);
+            String title = c.getString(titleIndex);
+
+            lecture = new Lecture(title);
+            lecture.setId(id);
+        }
+        c.close();
+        return lecture;
+    }
+
+
     public void deleteLecture(int lectureId) {
         createLectureTable();
         sqLiteDatabase.execSQL("DELETE FROM lectures WHERE id = ?", new String[]{String.valueOf(lectureId)});

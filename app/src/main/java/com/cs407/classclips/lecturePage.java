@@ -13,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ public class lecturePage extends AppCompatActivity {
         setContentView(R.layout.activity_lecture_page);
 
         classId = getIntent().getIntExtra("CLASS_ID", -1);
-        TextView classNameTextView = findViewById(R.id.classNameTextView);
+        TextView classNameTextView = findViewById(R.id.lectureNameTextView);
         // TODO: Implement getting and setting the class name
 
         //for navigation bar with home, back, help
@@ -82,7 +81,7 @@ public class lecturePage extends AppCompatActivity {
         });
 
         // Set the listeners for the Add and Delete buttons
-        Button addLectureButton = findViewById(R.id.addLectureButton);
+        Button addLectureButton = findViewById(R.id.buttonEndLecture);
         addLectureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +89,7 @@ public class lecturePage extends AppCompatActivity {
             }
         });
 
-        Button deleteClassButton = findViewById(R.id.deleteClassButton);
+        Button deleteClassButton = findViewById(R.id.buttonStartLecture);
         deleteClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,7 +125,9 @@ public class lecturePage extends AppCompatActivity {
     private void openLectureDetail(Lecture lecture) {
         // Navigate to Lecture Detail Activity
         int lectureId = lecture.getId();
-
+        Intent intent = new Intent(this, LectureDetailsActivity.class);
+        intent.putExtra("LECTURE_ID", lectureId);
+        startActivity(intent);
     }
 
     private void addNewLecture(int classId) {
@@ -157,10 +158,5 @@ public class lecturePage extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finish(); // Close the current activity
-    }
-
-
-    private void deleteLecture(int lectureId){
-        //put this in lecture details activity
     }
 }

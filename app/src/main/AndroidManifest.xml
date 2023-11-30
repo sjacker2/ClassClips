@@ -16,6 +16,9 @@
         android:theme="@style/Theme.ClassClips"
         tools:targetApi="31">
         <activity
+            android:name=".LectureDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".lecturePage"
             android:exported="false" />
         <activity
