@@ -61,6 +61,7 @@ public class ClassAdapter extends ArrayAdapter<Class> {
 
         TextView textViewClassName = convertView.findViewById(R.id.textViewClassName); // ERROR 1 Cannot resolve symbol 'TextView'
         Button buttonRename = convertView.findViewById(R.id.buttonRename);
+        Button buttonDelete = convertView.findViewById(R.id.deleteClass);
 
         Class classItem = classes.get(position);
         textViewClassName.setText(String.format("Class: %s", classItem.getTitle())); // ERROR 2 Cannot resolve method 'setText(String)'
@@ -70,6 +71,15 @@ public class ClassAdapter extends ArrayAdapter<Class> {
                 listener.onRenameClicked(classItem, position);
             }
         });
+
+        buttonDelete.setOnClickListener(v -> {
+            classes.remove(position);
+            notifyDataSetChanged();
+        });
+
+
+
+
 
 
         return convertView;

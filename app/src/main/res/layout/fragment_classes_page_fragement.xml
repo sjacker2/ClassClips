@@ -48,7 +48,7 @@
                 android:textColor="@color/white"
                 android:divider="@color/white"
                 android:dividerHeight="1dp"
-                android:listSelector="#800020"
+                android:listSelector="#bcbcbc"
                 android:background="@drawable/background2"
                 >
             </ListView>

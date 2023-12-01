@@ -12,10 +12,15 @@
         android:layout_weight="1"
         android:text="Class Name"
         android:textSize="18sp" />
-
     <Button
         android:id="@+id/buttonRename"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Rename" />
+    <Button
+        android:id="@+id/deleteClass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete" />
+
 </LinearLayout>
