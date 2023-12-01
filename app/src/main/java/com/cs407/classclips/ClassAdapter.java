@@ -75,6 +75,7 @@ public class ClassAdapter extends ArrayAdapter<Class> {
         buttonDelete.setOnClickListener(v -> {
             classes.remove(position);
             notifyDataSetChanged();
+
         });
 
 

@@ -23,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -96,6 +97,32 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
                 // Instantiate the InputNameFragment with type for adding a class
                 InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_CLASS, -1); // -1 as classId since it's irrelevant here
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "InputNameDialog");
+            }
+        });
+        //
+        //  Search for individual classes
+        //
+        SearchView searchView = view.findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                ArrayList<Class> filteredList = new ArrayList<>();
+                for (Class classItem : classes) {
+                    if(classItem.getTitle().toLowerCase().contains(newText.toLowerCase())) {
+                        filteredList.add(classItem);
+                    }
+                }
+
+                adapter = new ClassAdapter(getActivity(), filteredList, ClassesPageFragment.this);
+                ListView listView = view.findViewById(R.id.classesListView);
+
+                listView.setAdapter(adapter);
+                return true;
             }
         });
 
