@@ -47,6 +47,7 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
     private ArrayList<String> displayClasses;
     static ArrayList<Class> classes;
     private ClassAdapter adapter; // Changed from ArrayAdapter<String> to ClassAdapter
+    private DBHelper dbHelper;
 
     public ClassesPageFragment() {
         // Required empty public constructor
@@ -126,6 +127,11 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
             }
         });
 
+        Context context = getActivity().getApplicationContext();
+        SQLiteDatabase sqLiteDatabase = context.openOrCreateDatabase("classes", Context.MODE_PRIVATE, null);
+        dbHelper = new DBHelper(sqLiteDatabase, getActivity().getApplicationContext());
+
+
         // current bug: when you add a new class the list does not visually update until you navigate to help and back to home.
         initClasses(view);
 
@@ -200,7 +206,22 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
         classToRename.setTitle(newClassName);
         displayClasses.set(position, String.format("Class: %s", newClassName));
         this.adapter.notifyDataSetChanged();
+
+        // Reload classes from the database and update the adapter
+        loadClasses();
     }
+
+    private void loadClasses() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
+        String user = sharedPreferences.getString("username", "");
+        classes = dbHelper.readClasses(user);
+
+        // Update the adapter with the new list of classes
+        this.adapter = new ClassAdapter(getActivity(), classes, this);
+        ListView listView = getView().findViewById(R.id.classesListView);
+        listView.setAdapter(this.adapter);
+    }
+
 
     //when click on a class goes to that class page
     private void openLecturePage(int classId) {
@@ -208,5 +229,7 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
         intent.putExtra("CLASS_ID", classId);
         startActivity(intent);
     }
+
+
 
 }

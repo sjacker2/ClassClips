@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -26,6 +27,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
         // Retrieve the lectureId passed from the previous activity
         lectureId = getIntent().getIntExtra("LECTURE_ID", -1);
+        Log.d("LectureDetailsActivity", "Received lecture ID: " + lectureId);
+
         if (lectureId == -1) {
             Toast.makeText(this, "Error: Lecture not found.", Toast.LENGTH_LONG).show();
             finish(); // Close the activity if lectureId is not found

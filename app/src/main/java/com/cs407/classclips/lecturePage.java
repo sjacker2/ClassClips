@@ -15,6 +15,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.util.Log;
+
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -133,6 +135,7 @@ public class lecturePage extends AppCompatActivity {
     private void openLectureDetail(Lecture lecture) {
         // Navigate to Lecture Detail Activity
         int lectureId = lecture.getId();
+        Log.d("lecturePage", "Opening lecture details for ID: " + lectureId);
         Intent intent = new Intent(this, LectureDetailsActivity.class);
         intent.putExtra("LECTURE_ID", lectureId);
         startActivity(intent);
