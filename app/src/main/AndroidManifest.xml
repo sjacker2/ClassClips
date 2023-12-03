@@ -19,7 +19,7 @@
             android:name=".LectureDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".lecturePage"
+            android:name=".LecturePage"
             android:exported="false" />
         <activity
             android:name=".WelcomeActivity"

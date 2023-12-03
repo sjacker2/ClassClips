@@ -25,27 +25,39 @@
             android:padding="16dp"
             android:textSize="24sp" />
 
+        <Button
+            android:id="@+id/recordButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Start Recording"
+            android:layout_marginBottom="200dp"/>
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="62dp"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/playButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Play"
+                android:layout_gravity="center"/>
 
             <Button
-                android:id="@+id/buttonStartLecture"
-                android:layout_width="193dp"
+                android:id="@+id/restartButton"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:text="Start Lecture"
-                android:textColor="@color/black" />
-
-            <Button
-                android:id="@+id/buttonEndLecture"
-                android:layout_width="218dp"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:text="End Lecture"
-                android:textColor="@color/black" />
+                android:layout_weight="1"
+                android:text="Restart"
+                android:layout_gravity="center"/>
 
         </LinearLayout>
 

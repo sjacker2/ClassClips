@@ -22,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
-public class lecturePage extends AppCompatActivity {
+public class LecturePage extends AppCompatActivity {
     private int classId;
     private ArrayList<Lecture> lectures;
     private ArrayList<String> displayLectures;
@@ -138,6 +138,7 @@ public class lecturePage extends AppCompatActivity {
         Log.d("lecturePage", "Opening lecture details for ID: " + lectureId);
         Intent intent = new Intent(this, LectureDetailsActivity.class);
         intent.putExtra("LECTURE_ID", lectureId);
+        intent.putExtra("CLASS_ID", classId);
         startActivity(intent);
     }
 
