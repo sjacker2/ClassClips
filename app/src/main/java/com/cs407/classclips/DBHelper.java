@@ -25,6 +25,10 @@ public class DBHelper {
                 "(id INTEGER PRIMARY KEY, classId INTEGER, title TEXT, FOREIGN KEY(classId) REFERENCES classes(id))");
     }
 
+    public static void createLecturePhotosTable() {
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS lecture_photos " +
+                "(id INTEGER PRIMARY KEY, lectureId INTEGER, photoPath TEXT, FOREIGN KEY(lectureId) REFERENCES lectures(id))");
+    }
 
 
     public ArrayList<Class> readClasses(String username) {
@@ -124,6 +128,27 @@ public class DBHelper {
         c.close();
         return lecture;
     }
+
+    public void savePhotoPath(int lectureId, String photoPath) {
+        createLecturePhotosTable();
+        sqLiteDatabase.execSQL("INSERT INTO lecture_photos (lectureId, photoPath) VALUES (?, ?)",
+                new String[]{String.valueOf(lectureId), photoPath});
+    }
+
+    public ArrayList<String> getPhotoPathsForLecture(int lectureId) {
+        createLecturePhotosTable();
+        Cursor c = sqLiteDatabase.rawQuery("SELECT photoPath FROM lecture_photos WHERE lectureId = ?",
+                new String[]{String.valueOf(lectureId)});
+
+        ArrayList<String> photoPaths = new ArrayList<>();
+        while (c.moveToNext()) {
+            String path = c.getString(c.getColumnIndex("photoPath"));
+            photoPaths.add(path);
+        }
+        c.close();
+        return photoPaths;
+    }
+
 
 
     public void deleteLecture(int lectureId) {

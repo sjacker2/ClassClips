@@ -5,54 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClassesPageFragment"
-    android:background="@drawable/background2"
-    >
+    android:background="@drawable/background2">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <android.widget.SearchView
+            android:id="@+id/searchView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:queryHint="Search"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/plusButton"
+            app:layout_constraintHorizontal_bias="0.5" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="95dp"
-                android:orientation="horizontal">
+        <ImageButton
+            android:id="@+id/plusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleX="1.5"
+            android:scaleY="1.5"
+            android:src="@android:drawable/ic_menu_add"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/searchView" />
 
-                <android.widget.SearchView
-                    android:id="@+id/searchView"
-                    android:layout_width="350dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:queryHint="Search"
-                    android:outlineAmbientShadowColor="@color/white" />
-
-                <ImageButton
-                    android:id="@+id/plusButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:scaleX="1.5"
-                    android:scaleY="1.5"
-                    android:src="@android:drawable/ic_menu_add" />
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/classesListView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/white"
-                android:divider="@color/white"
-                android:dividerHeight="1dp"
-                android:listSelector="#bcbcbc"
-                android:background="@drawable/background2"
-                >
-            </ListView>
-        </LinearLayout>
+        <ListView
+            android:id="@+id/classesListView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:textColor="@color/white"
+            android:divider="@color/white"
+            android:dividerHeight="1dp"
+            android:listSelector="#bcbcbc"
+            android:background="@drawable/background2"
+            app:layout_constraintTop_toBottomOf="@id/searchView"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

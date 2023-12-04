@@ -1,19 +1,37 @@
 package com.cs407.classclips;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,7 +40,12 @@ import android.Manifest;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class LectureDetailsActivity extends AppCompatActivity {
 
@@ -42,21 +65,50 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
     SeekBar seekBar;
 
-    // Requesting permission to RECORD_AUDIO
+    private String currentPhotoPath;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int REQUEST_CAMERA_PERMISSIONS = 201;
+    private static final int REQUEST_CAMERA_PERMISSION = 202;
+    private static final int REQUEST_STORAGE_PERMISSION = 203;
     private boolean permissionToRecordAccepted = false;
-    private String [] permissions = {Manifest.permission.RECORD_AUDIO};
+    private boolean cameraPermissionGranted = false;
+    private boolean writeExternalStoragePermissionGranted = false;
+
+    private ActivityResultLauncher<Intent> takePictureLauncher;
+    private String [] permissions = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode){
+
+        switch (requestCode) {
             case REQUEST_RECORD_AUDIO_PERMISSION:
-                permissionToRecordAccepted  = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    permissionToRecordAccepted = true;
+                } else {
+                    Toast.makeText(this, "Permission for audio recording denied", Toast.LENGTH_SHORT).show();
+                    // Handle the denial as appropriate for your app
+                }
+                break;
+            case REQUEST_STORAGE_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    writeExternalStoragePermissionGranted = true;
+                } else {
+                    Toast.makeText(this, "Permission for external storage denied", Toast.LENGTH_SHORT).show();
+                    // Handle the denial as appropriate for your app
+                }
+                break;
+            case REQUEST_CAMERA_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    cameraPermissionGranted = true;
+                } else {
+                    Toast.makeText(this, "Permission for camera denied", Toast.LENGTH_SHORT).show();
+                    // Handle the denial as appropriate for your app
+                }
                 break;
         }
-        if (!permissionToRecordAccepted ) finish();
-
     }
+
 
     private void startRecording() {
         recorder = new MediaRecorder();
@@ -157,6 +209,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
         // request audio recording perms
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERMISSION);
 
         // Initialize the DBHelper
         Context context = getApplicationContext();
@@ -195,6 +249,21 @@ public class LectureDetailsActivity extends AppCompatActivity {
             return true;
         });
 
+
+        takePictureLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            // Save each new photo path in the database
+                            dbHelper.savePhotoPath(lectureId, currentPhotoPath);
+                            // Optionally, refresh the list view to display the new photo
+                            loadPhotoList();
+                        }
+                    }
+                });
+
         // Initialize UI components with lecture details
         initializeUI();
 
@@ -212,6 +281,14 @@ public class LectureDetailsActivity extends AppCompatActivity {
                     startLecture();
                     recordButton.setText("Stop Recording");
                 }
+            }
+        });
+
+        Button snapPicButton = findViewById(R.id.snapPicButton);
+        snapPicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dispatchTakePictureIntent();
             }
         });
 
@@ -269,6 +346,9 @@ public class LectureDetailsActivity extends AppCompatActivity {
         //set up UI
         TextView lectureNameTextView = findViewById(R.id.lectureNameTextView);
         lectureNameTextView.setText(lecture.getTitle());
+
+        //load photos list
+        loadPhotoList();
         //maybe add date here too
 
         //load recordings and pictures if already have some
@@ -285,6 +365,80 @@ public class LectureDetailsActivity extends AppCompatActivity {
         //where end recording
         stopRecording();
     }
+
+    private void loadPhotoList() {
+        ArrayList<String> photoPaths = dbHelper.getPhotoPathsForLecture(lectureId);
+        ArrayList<String> photoNames = new ArrayList<>();
+        for (String path : photoPaths) {
+            File photoFile = new File(path);
+            photoNames.add(photoFile.getName());
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_1, photoNames);
+        ListView photosListView = findViewById(R.id.photosListView);
+        photosListView.setAdapter(adapter);
+
+        photosListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                showImageInPopup(photoPaths.get(position));
+            }
+        });
+    }
+
+    private void showImageInPopup(String photoPath) {
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_image_view);
+
+        ImageView imageView = dialog.findViewById(R.id.dialogImageView);
+        Bitmap myBitmap = BitmapFactory.decodeFile(photoPath);
+        imageView.setImageBitmap(myBitmap);
+
+        dialog.show();
+    }
+
+
+
+    private void dispatchTakePictureIntent() {
+        // Check if the necessary permissions have been granted
+        if (!cameraPermissionGranted || !writeExternalStoragePermissionGranted) {
+            Toast.makeText(this, "Camera and storage permissions are required.", Toast.LENGTH_SHORT).show();
+            // Optionally, you could re-request the permissions here
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERMISSION);
+            return;
+        }
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Handle error, e.g., by logging or displaying a message
+                Log.e("LectureDetailsActivity", "Error occurred while creating the file", ex);
+            }
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this, "com.cs407.classclips.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                takePictureLauncher.launch(takePictureIntent);
+            }
+        }
+    }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
+
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
 
     private void playAudio() {
         startPlaying();
