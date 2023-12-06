@@ -5,6 +5,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -26,10 +27,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SeekBar;
@@ -70,6 +73,7 @@ public class LectureDetailsActivity extends AppCompatActivity {
     private static final int REQUEST_CAMERA_PERMISSIONS = 201;
     private static final int REQUEST_CAMERA_PERMISSION = 202;
     private static final int REQUEST_STORAGE_PERMISSION = 203;
+    private static final int REQUEST_ALL_PERMISSION = 204;
     private boolean permissionToRecordAccepted = false;
     private boolean cameraPermissionGranted = false;
     private boolean writeExternalStoragePermissionGranted = false;
@@ -82,6 +86,16 @@ public class LectureDetailsActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         switch (requestCode) {
+            case REQUEST_ALL_PERMISSION:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    permissionToRecordAccepted = true;
+                    writeExternalStoragePermissionGranted = true;
+                    cameraPermissionGranted = true;
+                } else {
+                    Toast.makeText(this, "Permission for all denied", Toast.LENGTH_SHORT).show();
+                    // Handle the denial as appropriate for your app
+                }
+                break;
             case REQUEST_RECORD_AUDIO_PERMISSION:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     permissionToRecordAccepted = true;
@@ -145,11 +159,9 @@ public class LectureDetailsActivity extends AppCompatActivity {
             }
         }
 
-        // set max is crashing the app not sure why yet
-        //seekBar.setMax(player.getDuration() / 1000);
         player.start();
         seekBar.setMax(player.getDuration() / 1000);
-        Log.i("duration", "D: " + player.getDuration());
+        //Log.i("duration", "D: " + player.getDuration());
         playing = true;
 
         // https://stackoverflow.com/questions/17168215/seekbar-and-media-player-in-android
@@ -207,10 +219,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
         filePath = getExternalCacheDir().getAbsolutePath();
         filePath += "/recording_" + classId + "_" + lectureId + ".3gp";
 
-        // request audio recording perms
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
-        ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERMISSION);
+        // request all perms
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_ALL_PERMISSION);
 
         // Initialize the DBHelper
         Context context = getApplicationContext();
@@ -276,10 +286,10 @@ public class LectureDetailsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (recording) {
                     endLecture();
-                    recordButton.setText("Start Recording");
+                    //recordButton.setText("Start Recording");
                 } else {
                     startLecture();
-                    recordButton.setText("Stop Recording");
+                    //recordButton.setText("Stop Recording");
                 }
             }
         });
@@ -357,13 +367,41 @@ public class LectureDetailsActivity extends AppCompatActivity {
     private void startLecture() {
         // Code to handle starting the lecture
         //where start recording
-        startRecording();
+        showStartRecordingDialog();
+    }
+
+    private void showStartRecordingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Any previous recording will be lost.");
+        builder.setTitle("Are you sure you want to start a recording?");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            Button recordButton = findViewById(R.id.recordButton);
+            startRecording();
+            recordButton.setText("Stop Recording");
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     private void endLecture() {
         // Code to handle ending the lecture
         //where end recording
-        stopRecording();
+        showStopRecordingDialog();
+    }
+
+    private void showStopRecordingDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Are you sure you want to stop recording?");
+
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            Button recordButton = findViewById(R.id.recordButton);
+            stopRecording();
+            recordButton.setText("Start Recording");
+            Toast.makeText(this, "Recording Saved!", Toast.LENGTH_LONG).show();
+        });
+        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+        builder.show();
     }
 
     private void loadPhotoList() {
@@ -405,8 +443,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
         if (!cameraPermissionGranted || !writeExternalStoragePermissionGranted) {
             Toast.makeText(this, "Camera and storage permissions are required.", Toast.LENGTH_SHORT).show();
             // Optionally, you could re-request the permissions here
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
-            ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERMISSION);
+            //ActivityCompat.requestPermissions(this, permissions, REQUEST_CAMERA_PERMISSION);
+            //ActivityCompat.requestPermissions(this, permissions, REQUEST_STORAGE_PERMISSION);
             return;
         }
 
