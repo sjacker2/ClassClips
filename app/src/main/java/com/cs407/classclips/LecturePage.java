@@ -14,6 +14,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.util.Log;
 
@@ -91,6 +92,20 @@ public class LecturePage extends AppCompatActivity {
             }
         });
 
+        SearchView searchView2 = findViewById(R.id.searchView2);
+
+        searchView2.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filter(newText);
+                return true;
+            }
+        });
         Button deleteClassButton = findViewById(R.id.buttonStartLecture);
         deleteClassButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +118,17 @@ public class LecturePage extends AppCompatActivity {
         loadLectures();
     }
 
-
+    private void filter(String text) {
+        ArrayList<String> filteredText = new ArrayList<>();
+        for (String lecture : displayLectures) {
+            if (lecture.toLowerCase().contains(text.toLowerCase())) {
+                filteredText.add(lecture);
+            }
+        }
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, filteredText);
+        ListView lecturesListView = findViewById(R.id.lecturesListView);
+        lecturesListView.setAdapter(adapter);
+    }
 
     private void loadLectures() {
         // Fetch lectures for the given class from the database

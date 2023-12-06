@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LecturePage"
-    android:background="@drawable/backgroundredpoly">
+    tools:context=".LecturePage">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -55,8 +55,7 @@
             android:layout_weight="1"
             android:divider="@color/white"
             android:dividerHeight="1dp"
-            android:listSelector="#800020"
-            android:background="@drawable/backgroundredpoly" />
+            android:listSelector="#800020"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation1"
