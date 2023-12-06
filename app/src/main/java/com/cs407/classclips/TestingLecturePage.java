@@ -47,7 +47,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
-public class Ttestlect extends AppCompatActivity {
+public class TestingLecturePage extends AppCompatActivity {
 
     private int lectureId;
     private int classId;
@@ -155,7 +155,7 @@ public class Ttestlect extends AppCompatActivity {
         // https://stackoverflow.com/questions/17168215/seekbar-and-media-player-in-android
         Handler mHandler = new Handler();
         // update Seekbar on the UI thread
-        Ttestlect.this.runOnUiThread(new Runnable() {
+        TestingLecturePage.this.runOnUiThread(new Runnable() {
 
             @Override
             public void run() {
