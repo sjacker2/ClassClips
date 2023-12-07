@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#808080">
+    android:background="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Lecture name"
-            android:textColorHint="@color/white"
+            android:textColorHint="@color/black"
             android:textAlignment="center"/>
 
         <LinearLayout
@@ -36,7 +36,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Save"
-                android:backgroundTint="@color/black"/>
+                android:backgroundTint="#dadada"
+                android:textColor="@color/black"/>
 
             <Button
                 android:id="@+id/buttonCancel"
@@ -44,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Cancel"
-                android:backgroundTint="@color/black"/>
+                android:backgroundTint="#dadada"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
 

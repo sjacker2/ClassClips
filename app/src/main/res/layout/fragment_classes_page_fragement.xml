@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClassesPageFragment"
-    android:background="@drawable/background2">
+    android:background="#D30000">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -42,8 +42,8 @@
             android:textColor="@color/white"
             android:divider="@color/white"
             android:dividerHeight="1dp"
-            android:listSelector="#bcbcbc"
-            android:background="@drawable/background2"
+            android:listSelector="#dadada"
+            android:background="#ff4f4b"
             app:layout_constraintTop_toBottomOf="@id/searchView"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

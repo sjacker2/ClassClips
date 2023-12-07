@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LecturePage">
+    tools:context=".LecturePage"
+    android:background="#D30000">
 
 
     <LinearLayout
@@ -28,14 +29,14 @@
             <android.widget.SearchView
                 android:id="@+id/searchView2"
                 android:layout_width="192dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
             <Button
                 android:id="@+id/buttonStartLecture"
                 android:layout_width="114dp"
                 android:layout_height="wrap_content"
                 android:text="Delete Class"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#dadada"
                 android:textColor="@color/black"/>
 
             <Button
@@ -43,7 +44,7 @@
                 android:layout_width="107dp"
                 android:layout_height="wrap_content"
                 android:text="Add New Lecture"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="#dadada"
                 android:textColor="@color/black"/>
 
         </LinearLayout>
@@ -55,7 +56,8 @@
             android:layout_weight="1"
             android:divider="@color/white"
             android:dividerHeight="1dp"
-            android:listSelector="#800020"/>
+            android:listSelector="#dadada"
+            android:background="#ff4f4b"/>
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation1"

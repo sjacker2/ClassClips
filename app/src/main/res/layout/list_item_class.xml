@@ -18,7 +18,9 @@
         android:layout_height="wrap_content"
         android:text="Rename"
         android:focusable="false"
-        android:clickable="false" />
+        android:clickable="false"
+        android:backgroundTint="#dadada"
+        android:textColor="@color/black"/>
 
 
 </LinearLayout>

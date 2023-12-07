@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LectureDetailsActivity">
+    tools:context=".LectureDetailsActivity"
+    android:background="#D30000">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -28,19 +29,24 @@
             android:id="@+id/recordButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start Recording" />
+            android:text="Start Recording"
+            android:backgroundTint="#dadada"
+            android:textColor="@color/black"/>
 
         <Button
             android:id="@+id/snapPicButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Snap a pic" />
+            android:text="Snap a pic"
+            android:backgroundTint="#dadada"
+            android:textColor="@color/black"/>
 
         <SeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:background="@color/white"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,14 +59,18 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Play" />
+                android:text="Play"
+                android:backgroundTint="#dadada"
+                android:textColor="@color/black"/>
 
             <Button
                 android:id="@+id/restartButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Restart" />
+                android:text="Restart"
+                android:backgroundTint="#dadada"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
 
@@ -68,7 +78,9 @@
             android:id="@+id/photosListView"
             android:layout_width="match_parent"
             android:layout_height="417dp"
-            android:layout_marginTop="16dp" />
+            android:layout_marginTop="16dp"
+            android:listSelector="#dadada"
+            android:background="#D30000"/>
 
     </LinearLayout>
 
