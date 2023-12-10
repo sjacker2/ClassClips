@@ -30,6 +30,29 @@ public class InputNameFragment extends DialogFragment {
     private int type; // This determines if the fragment is used for a class or a lecture
     private int classId; // Needed if this is for adding a lecture
 
+    // Define an interface as an inner class
+    public interface OnClassAddedListener {
+        void onClassAdded(int classId);
+    }
+
+    private OnClassAddedListener listener;
+
+    // Method to set the listener
+    public void setListener(OnClassAddedListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnLectureAddedListener {
+        void onLectureAdded(String lectureTitle);
+    }
+
+    private OnLectureAddedListener lectureAddedListener;
+
+    public void setOnLectureAddedListener(OnLectureAddedListener listener) {
+        this.lectureAddedListener = listener;
+    }
+
+
     public static InputNameFragment newInstance(int type, int classId) {
         InputNameFragment fragment = new InputNameFragment();
         Bundle args = new Bundle();
@@ -80,12 +103,23 @@ public class InputNameFragment extends DialogFragment {
                     if (type == TYPE_CLASS) {
                         // Save the class name
                         String username = sharedPreferences.getString("username", "");
-                        dbHelper.saveClass(username, name);
+                        int newlyAddedClassId = dbHelper.saveClass(username, name);
                         Toast.makeText(getActivity(), "Class saved!", Toast.LENGTH_SHORT).show();
+
+                        if (listener != null) {
+                            listener.onClassAdded(newlyAddedClassId);
+                        }
+
+                        dismiss(); // Close the dialog
                     } else if (type == TYPE_LECTURE) {
-                        // Save the lecture name
-                        dbHelper.addLecture(classId, name);
+                        // Notify the lecturePage to add the lecture
+                        if (lectureAddedListener != null) {
+                            lectureAddedListener.onLectureAdded(name);
+                        }
+
+                        dismiss(); // Close the dialog
                         Toast.makeText(getActivity(), "Lecture saved!", Toast.LENGTH_SHORT).show();
+
                     }
 
                     dismiss(); // Close the dialog

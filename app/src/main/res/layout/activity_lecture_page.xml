@@ -7,65 +7,69 @@
     tools:context=".LecturePage"
     android:background="#D30000">
 
+    <TextView
+        android:id="@+id/lectureNameTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <android.widget.SearchView
+        android:id="@+id/searchView2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintTop_toBottomOf="@id/lectureNameTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/buttonStartLecture"
+        app:layout_constraintHorizontal_chainStyle="packed" />
 
-        <TextView
-            android:id="@+id/lectureNameTextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="16dp"
-            android:textSize="24sp" />
+    <Button
+        android:id="@+id/buttonStartLecture"
+        android:layout_width="124dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#dadada"
+        android:text="Delete Class"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEndLecture"
+        app:layout_constraintStart_toEndOf="@id/searchView2"
+        app:layout_constraintTop_toBottomOf="@id/lectureNameTextView" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="62dp"
-            android:orientation="horizontal">
+    <Button
+        android:id="@+id/buttonEndLecture"
+        android:layout_width="139dp"
+        android:layout_height="53dp"
+        android:backgroundTint="#dadada"
+        android:text="Add New Lecture"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/buttonStartLecture"
+        app:layout_constraintTop_toBottomOf="@id/lectureNameTextView" />
 
-            <android.widget.SearchView
-                android:id="@+id/searchView2"
-                android:layout_width="192dp"
-                android:layout_height="wrap_content"/>
+    <ListView
+        android:id="@+id/lecturesListView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:divider="@color/white"
+        android:dividerHeight="1dp"
+        android:listSelector="#dadada"
+        android:background="#ff4f4b"
+        app:layout_constraintTop_toBottomOf="@id/buttonStartLecture"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-            <Button
-                android:id="@+id/buttonStartLecture"
-                android:layout_width="114dp"
-                android:layout_height="wrap_content"
-                android:text="Delete Class"
-                android:backgroundTint="#dadada"
-                android:textColor="@color/black"/>
-
-            <Button
-                android:id="@+id/buttonEndLecture"
-                android:layout_width="107dp"
-                android:layout_height="wrap_content"
-                android:text="Add New Lecture"
-                android:backgroundTint="#dadada"
-                android:textColor="@color/black"/>
-
-        </LinearLayout>
-
-        <ListView
-            android:id="@+id/lecturesListView"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_weight="1"
-            android:divider="@color/white"
-            android:dividerHeight="1dp"
-            android:listSelector="#dadada"
-            android:background="#ff4f4b"/>
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation1"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"
-            android:layout_gravity="bottom"
-            app:menu="@menu/bottom_navigation_menu" />
-
-    </LinearLayout>
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation1"
+        android:layout_width="416dp"
+        android:layout_height="39dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_navigation_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

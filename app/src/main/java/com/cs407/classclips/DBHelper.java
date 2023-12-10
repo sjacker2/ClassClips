@@ -1,5 +1,6 @@
 package com.cs407.classclips;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -55,12 +56,18 @@ public class DBHelper {
         return classList;
     }
 
-    public void saveClass(String username, String title) {
+    public int saveClass(String username, String title) {
         createTable();
 
-        sqLiteDatabase.execSQL("INSERT INTO classes (username, title) VALUES (?, ?)",
-                new String[]{username, title});
+        ContentValues values = new ContentValues();
+        values.put("username", username);
+        values.put("title", title);
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = sqLiteDatabase.insert("classes", null, values);
+        return (int) newRowId;
     }
+
 
     public ArrayList<Lecture> getLecturesForClass(int classId) {
         createLectureTable();
@@ -81,11 +88,17 @@ public class DBHelper {
         return lecturesList;
     }
 
-    public void addLecture(int classId, String title) {
+    public int addLecture(int classId, String title) {
         createLectureTable();
-        sqLiteDatabase.execSQL("INSERT INTO lectures (classId, title) VALUES (?, ?)",
-                new String[]{String.valueOf(classId), title});
+        ContentValues values = new ContentValues();
+        values.put("classId", classId);
+        values.put("title", title);
+
+        // Insert the new row, returning the primary key value of the new row
+        long newRowId = sqLiteDatabase.insert("lectures", null, values);
+        return (int) newRowId;
     }
+
 
 
     public void updateClass(String content, String username, String title) {

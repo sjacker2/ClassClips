@@ -79,7 +79,8 @@ public class LecturePage extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Lecture selectedLecture = lectures.get(position);
-                openLectureDetail(selectedLecture);
+                int lectid = selectedLecture.getId();
+                openLectureDetail(lectid);
             }
         });
 
@@ -153,13 +154,19 @@ public class LecturePage extends AppCompatActivity {
     private void addNewLecture(int classId) {
         // Instantiate the InputNameFragment for adding a lecture
         InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_LECTURE, classId);
+        dialogFragment.setOnLectureAddedListener(new InputNameFragment.OnLectureAddedListener() {
+            @Override
+            public void onLectureAdded(String lectureTitle) {
+                int newLectureId = dbHelper.addLecture(classId, lectureTitle);
+                openLectureDetail(newLectureId);
+            }
+        });
         dialogFragment.show(getSupportFragmentManager(), "AddLectureDialog");
-        loadLectures();
+        //loadLectures();
     }
 
-    private void openLectureDetail(Lecture lecture) {
+    private void openLectureDetail(int lectureId) {
         // Navigate to Lecture Detail Activity
-        int lectureId = lecture.getId();
         Log.d("lecturePage", "Opening lecture details for ID: " + lectureId);
         Intent intent = new Intent(this, LectureDetailsActivity.class);
         intent.putExtra("LECTURE_ID", lectureId);

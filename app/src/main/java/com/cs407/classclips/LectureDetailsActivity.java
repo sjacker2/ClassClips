@@ -433,6 +433,15 @@ public class LectureDetailsActivity extends AppCompatActivity {
         Bitmap myBitmap = BitmapFactory.decodeFile(photoPath);
         imageView.setImageBitmap(myBitmap);
 
+        // Set an OnClickListener on the ImageView to dismiss the dialog when clicked
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss(); // Dismisses the dialog when the image is clicked
+            }
+        });
+
+
         dialog.show();
     }
 

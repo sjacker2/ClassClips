@@ -27,7 +27,7 @@ import java.util.ArrayList;
  * Use the {@link ClassesPageFragment#newInstance} factory method to
  * create an instance of this fragment
  */
-public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassAdapterListener  {
+public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassAdapterListener, InputNameFragment.OnClassAddedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +91,7 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
             public void onClick(View v) {
                 // Instantiate the InputNameFragment with type for adding a class
                 InputNameFragment dialogFragment = InputNameFragment.newInstance(InputNameFragment.TYPE_CLASS, -1); // -1 as classId since it's irrelevant here
+                dialogFragment.setListener(ClassesPageFragment.this); // Set the listener
                 dialogFragment.show(getActivity().getSupportFragmentManager(), "InputNameDialog");
             }
         });
@@ -135,6 +136,11 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
     public void onResume() {
         super.onResume();
         initClasses(getView());
+    }
+
+    @Override
+    public void onClassAdded(int classId) {
+        openLecturePage(classId); // Open the lecture page for the newly added class
     }
 
     @Override
