@@ -197,6 +197,8 @@ public class LectureDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lecture_details);
 
+        getSupportActionBar().hide();
+
         // Retrieve the lectureId passed from the previous activity
         lectureId = getIntent().getIntExtra("LECTURE_ID", -1);
         Log.d("LectureDetailsActivity", "Received lecture ID: " + lectureId);
@@ -240,12 +242,18 @@ public class LectureDetailsActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             Fragment selectedFragment = null;
             if(itemId == R.id.nav_back){
-                // navigate to previous screen
+                // navigate to Lecture page
+                Intent intent=new Intent(this, LecturePage.class);
+                intent.putExtra("CLASS_ID", classId);
+                startActivity(intent);
                 finish();
                 return true;
             }else if(itemId == R.id.nav_home){
                 // navigate to welcome activity
-                selectedFragment = new ClassesPageFragment();
+                Intent intent=new Intent(this, WelcomeActivity.class);
+                startActivity(intent);
+                finish();
+                return true;
             }else if(itemId == R.id.nav_help){
                 // navigate to help screen
                 selectedFragment = new HelpFragment();

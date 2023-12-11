@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,7 +34,7 @@ public class WelcomeActivity extends AppCompatActivity {
             Fragment selectedFragment = null;
             if(itemId == R.id.nav_back){
                 // navigate to previous screen
-                finish();
+                //finish();
                 return true;
             }else if(itemId == R.id.nav_home){
                 // navigate to welcome activity
@@ -54,6 +55,29 @@ public class WelcomeActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragmentContainerView, new ClassesPageFragment()).commit();
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.dropdown_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
+        int itemId = item.getItemId();
+
+        if (itemId == R.id.logout) {
+            sharedPreferences.edit().clear().apply();
+
+            Intent intent=new Intent(this, MainActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
