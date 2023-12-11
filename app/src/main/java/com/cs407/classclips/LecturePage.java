@@ -62,8 +62,10 @@ public class LecturePage extends AppCompatActivity {
                 finish();
                 return true;
             }else if(itemId == R.id.nav_help){
-                // navigate to help screen
-                selectedFragment = new HelpFragment();
+                Intent intent=new Intent(this, HelpPage.class);
+                startActivity(intent);
+                //finish();
+                return true;
             }
 
             if (selectedFragment != null) {
