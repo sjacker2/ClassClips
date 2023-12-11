@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,7 +26,12 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
+        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
+        String savedUsername = sharedPreferences.getString("username", null);
+        String savedPassword = sharedPreferences.getString("password", null);
         Intent intent = getIntent();
+
+
 
         //for navigation bar with home, back, help
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -33,8 +39,7 @@ public class WelcomeActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             Fragment selectedFragment = null;
             if(itemId == R.id.nav_back){
-                // navigate to previous screen
-                //finish();
+
                 return true;
             }else if(itemId == R.id.nav_home){
                 // navigate to welcome activity

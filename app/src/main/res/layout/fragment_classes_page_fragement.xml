@@ -13,27 +13,29 @@
 
         <android.widget.SearchView
             android:id="@+id/searchView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+
+            android:layout_width="227dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="20dp"
             android:queryHint="Search"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/logoutButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/plusButton"
-            app:layout_constraintHorizontal_bias="0.5" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
             android:id="@+id/plusButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="43dp"
+            android:layout_height="44dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="10dp"
             android:background="?android:attr/selectableItemBackground"
             android:scaleX="1.5"
             android:scaleY="1.5"
             android:src="@android:drawable/ic_menu_add"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/searchView" />
+            app:layout_constraintStart_toEndOf="@+id/logoutButton"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ListView
             android:id="@+id/classesListView"
@@ -48,6 +50,19 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="13dp"
+            android:backgroundTint="@color/white"
+            android:text="Logout"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toStartOf="@+id/plusButton"
+            app:layout_constraintStart_toEndOf="@+id/searchView"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

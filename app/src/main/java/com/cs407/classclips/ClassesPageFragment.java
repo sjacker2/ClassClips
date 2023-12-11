@@ -12,15 +12,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,6 +89,21 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        Button logout = view.findViewById(R.id.logoutButton);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
+              sharedPreferences.edit().clear().apply();
+
+              Intent intent = new Intent(getActivity(), MainActivity.class);
+              startActivity(intent);
+              getActivity().finish();
+            }
+        });
+
+
         ImageButton plusButton = view.findViewById(R.id.plusButton);
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
