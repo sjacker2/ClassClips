@@ -21,17 +21,14 @@ import com.google.android.material.navigation.NavigationBarView;
 
 public class WelcomeActivity extends AppCompatActivity {
 
+    SharedPreferences sharedPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
-        String savedUsername = sharedPreferences.getString("username", null);
-        String savedPassword = sharedPreferences.getString("password", null);
-        Intent intent = getIntent();
-
-
+        sharedPreferences = getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
 
         //for navigation bar with home, back, help
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -71,7 +68,6 @@ public class WelcomeActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        SharedPreferences sharedPreferences = getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
         int itemId = item.getItemId();
 
         if (itemId == R.id.logout) {

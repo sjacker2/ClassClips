@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,11 @@ public class DBHelper {
     public static void createTable() {
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS classes " +
                 "(id INTEGER PRIMARY KEY, classId INTEGER, username TEXT, title TEXT)");
+    }
+
+    public static void createUsersTable() {
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS users " +
+                "(id INTEGER PRIMARY KEY, username TEXT, password TEXT)");
     }
 
     public static void createLectureTable() {
@@ -155,7 +161,8 @@ public class DBHelper {
 
         ArrayList<String> photoPaths = new ArrayList<>();
         while (c.moveToNext()) {
-            String path = c.getString(c.getColumnIndex("photoPath"));
+            int col = c.getColumnIndex("photoPath");
+            String path = c.getString(col);
             photoPaths.add(path);
         }
         c.close();
@@ -173,5 +180,57 @@ public class DBHelper {
         createTable();
         sqLiteDatabase.execSQL("UPDATE classes SET title = ? WHERE id = ?",
                 new String[]{newTitle, String.valueOf(classId)});
+    }
+
+    public void addUser(String username, String password) {
+        createUsersTable();
+
+        sqLiteDatabase.execSQL("INSERT INTO users (username, password) VALUES (?, ?)",
+                new String[]{username, password});
+    }
+
+    public boolean checkUserPass(String username, String password) {
+        createUsersTable();
+
+        Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE username LIKE ?",
+                new String[]{username});
+        int passIndex = c.getColumnIndex("password");
+        c.moveToFirst();
+
+        while (!c.isAfterLast()) {
+            String pass = c.getString(passIndex);
+
+            if (password.equals(pass)) {
+                return true; // found matching user
+            }
+            c.moveToNext();
+        }
+        c.close();
+
+        return false; // did not find user
+    }
+
+    public boolean userExists(String username) {
+        createUsersTable();
+
+        Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM users WHERE username = ?",
+                new String[]{username});
+        int passIndex = c.getColumnIndex("password");
+        c.moveToFirst();
+
+        Log.i("password", passIndex + " ");
+
+        while (!c.isAfterLast()) {
+            String pass = c.getString(passIndex);
+
+            Log.i("password", pass);
+            c.moveToNext();
+
+            return true;
+        }
+
+        c.close();
+
+        return false;
     }
 }

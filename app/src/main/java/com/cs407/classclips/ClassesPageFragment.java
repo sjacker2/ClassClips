@@ -90,20 +90,6 @@ public class ClassesPageFragment extends Fragment implements ClassAdapter.ClassA
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        Button logout = view.findViewById(R.id.logoutButton);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              SharedPreferences sharedPreferences = getActivity().getSharedPreferences("com.cs407.classclips", Context.MODE_PRIVATE);
-              sharedPreferences.edit().clear().apply();
-
-              Intent intent = new Intent(getActivity(), MainActivity.class);
-              startActivity(intent);
-              getActivity().finish();
-            }
-        });
-
-
         ImageButton plusButton = view.findViewById(R.id.plusButton);
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
