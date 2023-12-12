@@ -50,7 +50,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="87dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="16dp">
 
@@ -59,28 +59,36 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Play"
                 android:backgroundTint="#dadada"
-                android:textColor="@color/black"/>
+                android:text="Play"
+                android:textColor="@color/black" />
 
             <Button
                 android:id="@+id/restartButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Restart"
                 android:backgroundTint="#dadada"
-                android:textColor="@color/black"/>
+                android:text="Restart"
+                android:textColor="@color/black" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/buttonDeleteLecture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#dadada"
+            android:text="Delete Lecture"
+            android:textColor="@color/black" />
 
         <ListView
             android:id="@+id/photosListView"
             android:layout_width="match_parent"
-            android:layout_height="417dp"
+            android:layout_height="372dp"
             android:layout_marginTop="16dp"
-            android:listSelector="#dadada"
-            android:background="#D30000"/>
+            android:background="#D30000"
+            android:listSelector="#dadada" />
 
     </LinearLayout>
 

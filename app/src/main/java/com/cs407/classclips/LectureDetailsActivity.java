@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
@@ -335,6 +336,14 @@ public class LectureDetailsActivity extends AppCompatActivity {
             }
         });
 
+        Button deleteButton = findViewById(R.id.buttonDeleteLecture);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteLecture(lectureId);
+            }
+        });
+
         seekBar = findViewById(R.id.seekBar);
 
         // setup seek bar
@@ -503,7 +512,22 @@ public class LectureDetailsActivity extends AppCompatActivity {
 
     private void deleteLecture(int lectureId){
         //create alert dialog like how deleting class to check
-        //if user wants to delete
-        //if want to delete call dbhelper method deleteLecture(lectureId)
+        new android.app.AlertDialog.Builder(this)
+                .setTitle("Delete Lecture")
+                .setMessage("Are you sure you want to delete this lecture and all its recordings and photos?")
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        performLectureDelete(lectureId);
+                    }})
+                .setNegativeButton("Cancel", null).show();
+    }
+
+    private void performLectureDelete(int lectureId){
+        dbHelper.deleteLecture(lectureId);
+
+        Intent intent = new Intent(this, LecturePage.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish(); // Close the current activity
     }
 }

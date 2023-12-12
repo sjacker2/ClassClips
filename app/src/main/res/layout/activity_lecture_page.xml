@@ -9,14 +9,14 @@
 
     <TextView
         android:id="@+id/lectureNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="404dp"
+        android:layout_height="30dp"
         android:gravity="center"
         android:padding="16dp"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.widget.SearchView
         android:id="@+id/searchView2"
